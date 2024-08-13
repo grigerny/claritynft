@@ -1,0 +1,21 @@
+[project]
+name = 'nft_demo'
+description = ''
+authors = []
+telemetry = true
+cache_dir = './.cache'
+requirements = []
+[contracts.nft]
+path = 'contracts/nft.clar'
+depends_on = ["ST2PABAF9FTAJYNFZH93XENAJ8FVY99RRM4DF2YCW.nft-trait"]
+
+clarity_version = 2
+epoch = 2.5
+[repl.analysis]
+passes = ['check_checker']
+
+[repl.analysis.check_checker]
+strict = false
+trusted_sender = false
+trusted_caller = false
+callee_filter = false
