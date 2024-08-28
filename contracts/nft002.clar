@@ -1,7 +1,7 @@
 ;; title: Amazing Aardvarks
-;; version: 0.03
-;; summary: This is a collection of 10,000 amazing aardvarks
-;; description: Some amazing description here
+;; version: 0.02
+;; summary: This is a collection about a group of amazing aardvarks
+;; description: Some description here
 
 ;; traits
 (use-trait commission-trait .commission-trait.commission)
@@ -18,17 +18,12 @@
 (define-constant err-not-authorized (err u401))
 (define-constant err-not-found (err u404))
 (define-constant err-listing (err u507))
-(define-constant err-sold-out (err u508))
 
-;; Supply
-(define-constant supply u10000)
-
-;; Sets contract-owner to address that deploys the contract
+;; Sets contract-owner to equal address that deploys the contract
 (define-constant contract-owner tx-sender)
 
 ;; data variables 
 (define-data-var last-token-id uint u0)
-(define-data-var base-uri (string-ascii 256) "ipfs://ipfs-url-goes-here/{id}")
 ;;
 
 ;; maps 
@@ -47,13 +42,12 @@
         (nft-transfer? amazing-aardvarks token-id sender recipient)))
 
 (define-public (mint (recipient principal))
- (let 
-      ((token-id (+ (var-get last-token-id) u1)))
-      (asserts! (is-eq tx-sender contract-owner) err-owner-only)
-      (asserts! (< (var-get last-token-id) supply) err-sold-out)
-      (try! (nft-mint? amazing-aardvarks token-id recipient))
-      (var-set last-token-id token-id)
-      (ok token-id)))
+    (let
+        ((token-id (+ (var-get last-token-id) u1)))
+        (asserts! (is-eq tx-sender contract-owner) err-owner-only)
+        (try! (nft-mint? amazing-aardvarks token-id recipient))
+        (var-set last-token-id token-id)
+        (ok token-id)))
 
 (define-public (list-in-ustx (id uint) (price uint) (comm <commission-trait>))
     (let ((listing {price: price, commission: (contract-of comm )}))
@@ -80,13 +74,3 @@
     (map-delete market id)
     (print {a: "buy-in-ustx", id: id})
     (ok true)))
-
-;; read-only functions
-(define-read-only (get-last-token-id (id uint)) 
-    (var-get last-token-id))
-
-(define-read-only (get-token-uri (id uint)) 
-    (ok (some (var-get base-uri))))
-
-(define-read-only (get-owner (id uint))
-    (nft-get-owner? amazing-aardvarks id))
