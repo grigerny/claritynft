@@ -1,5 +1,5 @@
 ;; title: Amazing Aardvarks
-;; version: 0.03
+;; version: 0.04
 ;; summary: This is a collection of 10,000 amazing aardvarks
 ;; description: Some amazing description here
 
@@ -47,13 +47,13 @@
         (nft-transfer? amazing-aardvarks token-id sender recipient)))
 
 (define-public (mint (recipient principal))
- (let 
-      ((token-id (+ (var-get last-token-id) u1)))
-      (asserts! (is-eq tx-sender contract-owner) err-owner-only)
-      (asserts! (< (var-get last-token-id) supply) err-sold-out)
-      (try! (nft-mint? amazing-aardvarks token-id recipient))
-      (var-set last-token-id token-id)
-      (ok token-id)))
+(let 
+    ((token-id (+ (var-get last-token-id) u1)))
+    (asserts! (is-eq tx-sender contract-owner) err-owner-only)
+    (asserts! (< (var-get last-token-id) supply) err-sold-out)
+    (try! (nft-mint? amazing-aardvarks token-id recipient))
+    (var-set last-token-id token-id)
+    (ok token-id)))
 
 (define-public (list-in-ustx (id uint) (price uint) (comm <commission-trait>))
     (let ((listing {price: price, commission: (contract-of comm )}))
@@ -83,10 +83,10 @@
 
 ;; read-only functions
 (define-read-only (get-last-token-id (id uint)) 
-    (var-get last-token-id))
+    (ok (var-get last-token-id)))
 
 (define-read-only (get-token-uri (id uint)) 
     (ok (some (var-get base-uri))))
 
 (define-read-only (get-owner (id uint))
-    (nft-get-owner? amazing-aardvarks id))
+    (ok (nft-get-owner? amazing-aardvarks id)))
