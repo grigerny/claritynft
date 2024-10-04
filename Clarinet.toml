@@ -13,6 +13,9 @@ path = 'contracts/commission-trait.clar'
 path = 'contracts/nft.clar'
 depends_on = ["ST2PABAF9FTAJYNFZH93XENAJ8FVY99RRM4DF2YCW.nft-trait", ".commission-trait"]
 
+[contracts.tipping]
+path = '/contracts/tipping.clar'
+
 [repl]
 clarity_version = 2
 epoch = 2.5
