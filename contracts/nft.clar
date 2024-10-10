@@ -104,6 +104,4 @@
 (define-read-only (get-token-uri (token-id uint))
     (ok (some (concat (concat (var-get base-uri) "{id}") ".json"))))
 
-
-
 (define-map balances {address: principal} {balance: uint})
