@@ -10,8 +10,8 @@
 
 ;; constants
 (define-constant tip-amount u1000000)
-(define-constant err-sending-tip (err 101))
-(define-constant err-unauthorized (err 102))
+(define-constant err-sending-tip (err u101))
+(define-constant err-unauthorized (err u102))
 
 ;; data variables 
 ;;
